@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"math/big"
 	"reflect"
 	"strconv"
@@ -594,8 +595,10 @@ func parseString(in []byte) (out, rest []byte, ok bool) {
 	}
 	length := binary.BigEndian.Uint32(in)
 	in = in[4:]
+	log.Printf("len: %d\tin: %d\thex: % x", length, len(in), in)
 	if uint32(len(in)) < length {
-		return
+		log.Printf("short read: expected > %d but got %d", length, len(in))
+		length = uint32(len(in))
 	}
 	out = in[:length]
 	rest = in[length:]
