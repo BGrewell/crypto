@@ -1356,9 +1356,10 @@ func parseOpenSSHPrivateKey(key []byte, decrypt openSSHDecryptFunc) (crypto.Priv
 			Primes: []*big.Int{key.P, key.Q},
 		}
 
-		if err := pk.Validate(); err != nil {
-			return nil, err
-		}
+		//TODO: Remove validation
+		//if err := pk.Validate(); err != nil {
+		//	return nil, err
+		//}
 
 		pk.Precompute()
 
