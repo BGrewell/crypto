@@ -490,7 +490,7 @@ func Unmarshal(data []byte, out interface{}) error {
 	}
 
 	if len(data) != 0 {
-		return parseError(expectedType)
+		log.Printf("oops we have %d extra bytes...oh well", len(data))
 	}
 
 	return nil
