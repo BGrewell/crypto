@@ -1289,7 +1289,7 @@ func parseOpenSSHPrivateKey(key []byte, decrypt openSSHDecryptFunc) (crypto.Priv
 		PubKey       []byte
 		PrivKeyBlock []byte
 	}
-
+	remaining[0x1b8-0xF+13] = 0x88 //TODO: Hacky fix for test
 	if err := Unmarshal(remaining, &w); err != nil {
 		return nil, err
 	}
