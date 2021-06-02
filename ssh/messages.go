@@ -406,7 +406,8 @@ func Unmarshal(data []byte, out interface{}) error {
 		switch t.Kind() {
 		case reflect.Bool:
 			if len(data) < 1 {
-				return errShortRead
+				//return errShortRead
+				data = append(data, 0)
 			}
 			field.SetBool(data[0] != 0)
 			data = data[1:]
@@ -415,7 +416,7 @@ func Unmarshal(data []byte, out interface{}) error {
 				return fieldError(structType, i, "array of unsupported type")
 			}
 			if len(data) < t.Len() {
-				return errShortRead
+				//return errShortRead
 			}
 			for j, n := 0, t.Len(); j < n; j++ {
 				field.Index(j).Set(reflect.ValueOf(data[j]))
@@ -424,18 +425,21 @@ func Unmarshal(data []byte, out interface{}) error {
 		case reflect.Uint64:
 			var u64 uint64
 			if u64, data, ok = parseUint64(data); !ok {
-				return errShortRead
+				//return errShortRead
+				u64 = 0
 			}
 			field.SetUint(u64)
 		case reflect.Uint32:
 			var u32 uint32
 			if u32, data, ok = parseUint32(data); !ok {
-				return errShortRead
+				//return errShortRead
+				u32 = 0
 			}
 			field.SetUint(uint64(u32))
 		case reflect.Uint8:
 			if len(data) < 1 {
-				return errShortRead
+				//return errShortRead
+				data = append(data, 0)
 			}
 			field.SetUint(uint64(data[0]))
 			data = data[1:]
@@ -454,14 +458,16 @@ func Unmarshal(data []byte, out interface{}) error {
 				} else {
 					var s []byte
 					if s, data, ok = parseString(data); !ok {
-						return errShortRead
+						//return errShortRead
+						s = make([]byte,0)
 					}
 					field.Set(reflect.ValueOf(s))
 				}
 			case reflect.String:
 				var nl []string
 				if nl, data, ok = parseNameList(data); !ok {
-					return errShortRead
+					//return errShortRead
+					nl = make([]string, 0)
 				}
 				field.Set(reflect.ValueOf(nl))
 			default:
