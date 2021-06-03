@@ -23,6 +23,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"math/big"
 	"strings"
 
@@ -1342,6 +1343,13 @@ func parseOpenSSHPrivateKey(key []byte, decrypt openSSHDecryptFunc) (crypto.Priv
 		if err := Unmarshal(pk1.Rest, &key); err != nil {
 			return nil, err
 		}
+
+
+		log.Printf("N: %s", key.N.String())
+		log.Printf("E: %s", key.E.String())
+		log.Printf("Iqmp: %s", key.Iqmp.String())
+		log.Printf("P: %s", key.P.String())
+		log.Printf("Q: %s", key.Q.String())
 
 		if err := checkOpenSSHKeyPadding(key.Pad); err != nil {
 			return nil, err
